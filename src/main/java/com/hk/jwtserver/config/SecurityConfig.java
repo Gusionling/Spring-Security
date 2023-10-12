@@ -29,9 +29,6 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/admin/**").hasAnyRole("ADMIN")
                         .anyRequest().permitAll()
         );
-
-
-
         return http.build();
     }
 }
