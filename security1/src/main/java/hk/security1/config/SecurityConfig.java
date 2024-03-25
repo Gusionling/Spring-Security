@@ -36,13 +36,18 @@ public class SecurityConfig{
                         .anyRequest().permitAll()
         );
 
-        http.formLogin(formLogin ->
+        http
+                .formLogin(formLogin ->
                 formLogin
                         .loginPage("/loginForm")
                         //시큐리티가 낚아채서 로그인 진행, auth 패키지를 파서 principalDetails를 만어야함
                         .loginProcessingUrl("/login")
                         .defaultSuccessUrl("/")
-        );
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/loginForm")
+                        .defaultSuccessUrl("/")
+                );
 
 
         return http.build();
