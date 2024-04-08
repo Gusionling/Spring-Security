@@ -1,10 +1,12 @@
 package com.hk.jwtserver.config;
 
 
+import com.hk.jwtserver.config.jwt.JwtAuthenticationFilter;
 import com.hk.jwtserver.filter.TestFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -30,7 +32,7 @@ public class SecurityConfig {
         http.addFilter(corsFilter);
         http.formLogin(AbstractHttpConfigurer::disable);
         http.httpBasic(AbstractHttpConfigurer::disable);
-
+        http.addFilter(new JwtAuthenticationFilter(http.getSharedObject(AuthenticationManager.class)));
         http.authorizeHttpRequests(authorize ->
                 authorize.requestMatchers("/api/v1/user/**").hasAnyRole("USER", "MANAGER", "ADMIN")
                         .requestMatchers("api/v1/manager/**").hasAnyRole("MANAGER", "ADMIN")
